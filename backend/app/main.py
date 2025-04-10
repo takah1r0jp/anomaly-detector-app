@@ -31,23 +31,21 @@ async def detect_anomaly(
             shutil.copyfileobj(file.file, buffer)
 
         # ここで異常検知を行うロジックを実装
-        code = generate_anomaly_detection_code(
-            # image_path=temp_filename,
-            # text=normal_conditions,
-        )
+        # 生成されるまで次の処理に進まないようにする
+        
+        code = await generate_anomaly_detection_code(normal_conditions)
 
         result = {"message": "未実装だよ", "is_anomalous": False}
 
         return {"status": "success", "result": result, "code": code}
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
-    
+
     finally:
         # 一時的な保存ファイルを削除
         print("Cleaning up temporary files...")
         cleanup_temp_files(temp_filename)
-    
 
 
 # サーバーを起動するためのコマンド（後で実行）

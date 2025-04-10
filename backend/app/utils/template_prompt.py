@@ -3,8 +3,8 @@
 # - a description of available modules,
 # - an example of an anomaly detection program that determines whether the specified conditions are met.
 
-template_prompt = """
-Output only the Python function.
+prompt = """
+Output only the Python function. Do not output anything except execute_command().
 
 class ImagePatch:
     # A Python class containing a crop of an image centered around a particular object , as well as relevant information .

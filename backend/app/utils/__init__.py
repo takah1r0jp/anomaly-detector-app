@@ -1,0 +1,1 @@
+from .detector import generate_anomaly_detection_code

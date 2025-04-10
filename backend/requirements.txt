@@ -1,0 +1,6 @@
+numpy == 1.26.4
+transformers == 4.46.3
+pillow == 10.2.0
+matplotlib
+
+# pip install -q -U google-genai

@@ -1,12 +1,10 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from typing import Optional
 import shutil
 import os
-from utils import generate_anomaly_detection_code
+from utils.generator import generate_anomaly_detection_code
 
 # FastAPIインスタンス作成
 app = FastAPI()
-
 
 # アプリケーション確認用
 @app.get("/")

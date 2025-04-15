@@ -3,9 +3,10 @@
 # 結果：異常か正常か，異常な場合その説明（入力されたテキストに準拠）
 
 import os
-from google import genai
-from google.genai import types
-from utils.template_prompt import prompt
+# from google import genai
+# from google.genai import types
+from utils.template_prompt import prompt #main運用するときは，utilsを消す，それ以外は追加しないとエラーが出る
+import anthropic
 
 
 def main():
@@ -19,25 +20,38 @@ def main():
     """
     final_prompt = prompt + normal_conditions
 
-    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+    # Anthropic
 
-    response = client.models.generate_content(
-        model="gemini-1.5-pro",
-        contents=final_prompt,
-        config=types.GenerateContentConfig(
-            system_instruction="you are python code generator.",
-            max_output_tokens=4000,
-        ),
+    client = anthropic.Anthropic(
+        api_key=os.environ["ANTHROPIC_API_KEY"],
     )
 
-    print(response.text)
+    message = client.messages.create(
+        max_tokens=4000,
+        messages=[{"role": "user", "content": final_prompt}],
+        model="claude-3-7-sonnet-20250219",
+    )
+    print(message.content[0].text)
+
+
+    # Gemini
+    # client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+    # response = client.models.generate_content(
+    #     model="gemini-1.5-pro",
+    #     contents=final_prompt,
+    #     config=types.GenerateContentConfig(
+    #         system_instruction="you are python code generator.",
+    #         max_output_tokens=4000,
+    #     ),
+    # )
+
+    # print(response.text)
 
 
 # 異常検知プログラムの自動生成
 async def generate_anomaly_detection_code(normal_conditions: str) -> str:  # text: str >> code: str
-    # ここで異常検知を行うロジックを実装
     # テキストを使って異常検知のコードを生成する
-    # ここではダミーのコードを返す
 
     # normal_conditionsがstr型であることを確認
     if not isinstance(normal_conditions, str):
@@ -53,42 +67,37 @@ async def generate_anomaly_detection_code(normal_conditions: str) -> str:  # tex
 
     final_prompt = prompt + final_condition
 
-    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-
-    response = client.models.generate_content(
-        model="gemini-1.5-pro",
-        contents=final_prompt,
-        config=types.GenerateContentConfig(
-            system_instruction="you are python code generator",
-            max_output_tokens=4000,
-        ),
+    # Anthropic
+    client = anthropic.Anthropic(
+        api_key=os.environ["ANTHROPIC_API_KEY"],
     )
 
-    code = response.text
+    message = client.messages.create(
+        max_tokens=4000,
+        messages=[{"role": "user", "content": final_prompt}],
+        model="claude-3-7-sonnet-20250219",
+    )
+    code = message.content[0].text
     print(code)
+    
+    # Gemini
+    # client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+    # response = client.models.generate_content(
+    #     model="gemini-1.5-pro",
+    #     contents=final_prompt,
+    #     config=types.GenerateContentConfig(
+    #         system_instruction="you are python code generator",
+    #         max_output_tokens=4000,
+    #     ),
+    # )
+    # code = response.text
+    # print(code)
 
     with open("generated_code.py", "w") as o:
         print('code="""', file=o)
         print(code, file=o)
         print('"""', file=o)
-
-    # code = """
-    # def execute_command1(image_path, image):
-    #     image_patch = ImagePatch(image)
-    #     pushpin_patches = image_patch.find("pushpin")
-
-    #     # Count the number of pushpins
-    #     num_pushpins = len(pushpin_patches)
-    #     print(f"Number of pushpins is {num_pushpins}")
-
-    #     # Verify if the count matches the condition
-    #     required_num = 15
-    #     anomaly_score = 0
-    #     if num_pushpins != required_num:
-    #         anomaly_score += 1
-
-    #     return formatting_answer(anomaly_score)
-    # """
 
     return code
 

@@ -1,7 +1,8 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import shutil
 import os
-from utils.generator import generate_anomaly_detection_code
+from utils.code_generator import generate_anomaly_detection_code
+from utils.code_executor import execute_code
 
 # FastAPIインスタンス作成
 app = FastAPI()
@@ -33,7 +34,7 @@ async def detect_anomaly(
         
         code = await generate_anomaly_detection_code(normal_conditions)
 
-        result = {"message": "未実装だよ", "is_anomalous": False}
+        result = execute_code(code, temp_filename)
 
         return {"status": "success", "result": result, "code": code}
 

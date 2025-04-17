@@ -5,7 +5,7 @@
 import os
 # from google import genai
 # from google.genai import types
-from utils.template_prompt import prompt #main運用するときは，utilsを消す，それ以外は追加しないとエラーが出る
+from app.utils.template_prompt import prompt 
 import anthropic
 
 

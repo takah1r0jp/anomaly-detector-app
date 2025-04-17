@@ -1,11 +1,21 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import shutil
 import os
-from utils.code_generator import generate_anomaly_detection_code
-from utils.code_executor import execute_code
+from app.utils.code_generator import generate_anomaly_detection_code
+from app.utils.code_executor import execute_code
+from fastapi.middleware.cors import CORSMiddleware
 
 # FastAPIインスタンス作成
 app = FastAPI()
+
+# CORSミドルウェアを追加
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # フロントエンドのオリジン
+    allow_credentials=True,
+    allow_methods=["*"],  # すべてのHTTPメソッドを許可
+    allow_headers=["*"],  # すべてのHTTPヘッダーを許可
+)
 
 # アプリケーション確認用
 @app.get("/")

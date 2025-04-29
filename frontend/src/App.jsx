@@ -9,7 +9,6 @@ function App() {
 
   const handleAddCondition = () => {
     const condition = conditionRef.current.value;
-    console.log(condition)
     if (condition) {
       setCondition([...normalcondition, condition]);
 

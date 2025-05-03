@@ -3,4 +3,10 @@ transformers == 4.46.3
 pillow == 10.2.0
 matplotlib
 
+fastapi
+uvicorn
+python-multipart
+anthropic
+
+torch
 # pip install -q -U google-genai

@@ -8,5 +8,5 @@ uvicorn
 python-multipart
 anthropic
 
-torch
+anthropic
 # pip install -q -U google-genai

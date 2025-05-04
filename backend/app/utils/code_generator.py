@@ -50,7 +50,7 @@ def main():
 
 
 # 異常検知プログラムの自動生成
-async def generate_anomaly_detection_code(normal_conditions: str) -> str:  # text: str >> code: str
+def generate_anomaly_detection_code(normal_conditions: str) -> str:  # text: str >> code: str
     # テキストを使って異常検知のコードを生成する
 
     # normal_conditionsがstr型であることを確認

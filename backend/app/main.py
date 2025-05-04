@@ -25,7 +25,7 @@ def read_root():
 
 # 画像をアップロードして異常検知を行うエンドポイント
 @app.post("/detect")
-async def detect_anomaly(
+def detect_anomaly(
     file: UploadFile = File(...),  # 画像ファイルのアップロード
     normal_conditions: str = "画像における正常条件を入力",  # 正常条件のテキスト
 ):
@@ -38,12 +38,11 @@ async def detect_anomaly(
         temp_filename = os.path.join(temp_dir, f"temp_{file.filename}")
         with open(temp_filename, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
-
-        # ここで異常検知を行うロジックを実装
-        # 生成されるまで次の処理に進まないようにする
         
-        code = await generate_anomaly_detection_code(normal_conditions)
+        # 異常検知プログラムを生成
+        code = generate_anomaly_detection_code(normal_conditions)
 
+        # 異常検知プログラムを実行
         result = execute_code(code, temp_filename)
 
         return {"status": "success", "result": result, "code": code}
